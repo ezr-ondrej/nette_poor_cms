@@ -1,0 +1,19 @@
+
+<div id="admin-overlay"></div>
+<div id="admin-box">
+<div id="admin-data-box">
+<div id="admin-secNav">
+    <a href="#" id="admin-btnClose">
+    <img src="{$basePath}/images/btn-close.gif" />
+    </a>
+</div>
+{snippet}
+{foreach $control->components as $component}
+    <div class="admin-data">
+    <h3>{$component->name}</h3>
+    {control $component}
+    </div>
+{/foreach}
+{/snippet}
+</div>
+</div>

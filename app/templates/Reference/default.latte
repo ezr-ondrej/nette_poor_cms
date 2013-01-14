@@ -1,0 +1,182 @@
+{block left}
+<h2 class="art-postheader">Zobrazit</h2>
+<div class="content-box">
+<ul class="art-vmenu">
+    <li>
+        <a href="{plink 'this', null}" n:class="$presenter->linkCurrent ? active">Vše</a>
+    </li>
+{foreach $reference_years as $year=>$link}
+    <li>
+        <a href="{plink 'this', $year}" n:class="$presenter->linkCurrent ? active">{$year}</a>
+    </li>
+{/foreach}
+</ul>
+<hr class="divider"/>
+</div>
+{/block}
+
+{block content}
+<h2 class="art-postheader">Reference</h2>
+<div class="art-post-body">
+    <div class="reference-top">
+        <div class="art-bar art-blockheader">
+            <h3 class="t">{$active_year}</h3>
+        </div>
+        
+        <div class="admin-tool">
+        {if $admin}<a href="#" class="admin" title="Přidat referenci"><img src="{$basePath}/images/buttons/add.png" /></a>{/if}
+        </div>
+    </div>
+    <div class="art-content-layout aktuality">
+	{control paginator}
+    {foreach $reference as $ref}
+    <div class="reference art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 100%;">
+            {if $admin}
+            <div class="admin-tool">
+                <a n:href="edit!, $ref->id" class="edit"><img src="{$basePath}/images/buttons/edit.png"></a>
+                <a n:href="delete!, $ref->id" class="delete"><img src="{$basePath}/images/buttons/del.png"></a>
+            </div>
+            {/if}
+            
+            <a n:href="show, $ref->id"><h3>{$ref->title}</h3></a>
+            <blockquote style="margin: 10px 0">
+                <a href="{$basePath}/files/{$ref->foto}" class="galery-{$ref->id}">
+                <img src="{$basePath}/files/thumb_{$ref->foto}" class="preview" />
+                </a>
+                {if $ref->galery_album_id}
+                {foreach $ref->galery_album->related('galery') as $galery}
+                    <a href="{$basePath}/files/galery/{$galery->name}" class="galery-{$ref->id}"></a>
+                {/foreach}
+                {/if}
+                <p>{$ref->text|truncate:300}</p>
+            </blockquote>
+        </div>
+    </div>
+
+    {*{if !$iterator->last}<hr class="divider"/>{/if}*}
+
+    <script>
+    $(function() {
+        $('a.galery-{$ref->id}').lightBox({
+            imageLoading: '{!$basePath}/images/galery/lightbox-ico-loading.gif',
+            imageBtnClose: '{!$basePath}/images/galery/lightbox-btn-close.gif',
+            imageBtnPrev: '{!$basePath}/images/galery/lightbox-btn-prev.gif',
+            imageBtnNext: '{!$basePath}/images/galery/lightbox-btn-next.gif'
+        });
+    });
+    </script>
+    {/foreach}
+    </div>
+    {control paginator}
+</div>
+
+<script>
+$(document).ready(function () {
+    $("input.date").each(function () { // input[type=date] does not work in IE
+        var el = $(this);
+        var value = el.val();
+        var date = (value ? $.datepicker.parseDate($.datepicker.W3C, value) : null);
+
+        var minDate = el.attr("min") || null;
+        if (minDate) minDate = $.datepicker.parseDate($.datepicker.W3C, minDate);
+        var maxDate = el.attr("max") || null;
+        if (maxDate) maxDate = $.datepicker.parseDate($.datepicker.W3C, maxDate);
+
+        // input.attr("type", "text") throws exception
+        if (el.attr("type") == "date") {
+            var tmp = $("<input/>");
+            $.each("class,disabled,id,maxlength,name,readonly,required,size,style,tabindex,title,value".split(","), function(i, attr)  {
+                tmp.attr(attr, el.attr(attr));
+            });
+            el.replaceWith(tmp);
+            el = tmp;
+        }
+        el.datepicker({
+            minDate: minDate,
+            maxDate: maxDate
+        });
+        el.val($.datepicker.formatDate(el.datepicker("option", "dateFormat"), date));
+    });
+    $("input.date.showyear")
+        .datepicker("option", "changeMonth", true)
+        .datepicker("option", "changeYear", true);
+});
+</script>
+
+{/block}
+
+{block admin}
+{if $admin}
+    {control adminForm}
+{/if}
+{/block}
+
+{block head}
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/paginator.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/jquery.lightbox-0.5.css" media="screen" />
+
+<script type="text/javascript" src="{$basePath}/js/jquery.lightbox-0.5.js"></script>
+
+<style>
+    .admin-tool { float: right; }
+    .admin-tool img { width: 40px; height: 40px; }
+    .reference-top { overflow: auto; }
+    .reference-top {
+        text-align: center;
+        margin: 5px;
+        color: #1B47AF;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .reference {
+        padding-top: 20px;
+    }
+    .reference blockquote {
+        overflow: auto;
+        padding-left: 10px;
+        background-image: none;
+    }
+    .reference h3 {
+        color: #1D319F;
+    }
+    .reference a {
+        text-decoration: none;
+    }
+    .reference a:hover h3,
+    .reference a:active h3{
+        text-decoration: underline;
+    }
+    img.preview {
+        width: 80px;
+        height: 80px;
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+<script>
+/* Czech initialisation for the jQuery UI date picker plugin. */
+/* Written by Tomas Muller (tomas@tomas-muller.net). */
+jQuery(function($) {
+    $.datepicker.regional['cs'] = {
+        closeText: 'Zavřít',
+        prevText: '&#x3c;Dříve',
+        nextText: 'Později&#x3e;',
+        currentText: 'Nyní',
+        monthNames: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen',
+            'září', 'říjen', 'listopad', 'prosinec'],
+        monthNamesShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čer', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
+        dayNames: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
+        dayNamesShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+        dayNamesMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+        weekHeader: 'Týd',
+        dateFormat: 'dd. mm. yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['cs']);
+});
+</script>
+{/block}

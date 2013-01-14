@@ -1,0 +1,46 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+#
+# If you don't protect this directory from direct web access, anybody will be able to see your passwords.
+# http://nette.org/security-warning
+#
+common:
+	parameters:
+
+	php:
+		date.timezone: Europe/Prague
+		# zlib.output_compression: yes
+
+
+	nette:
+		application:
+			errorPresenter: Error
+
+		session:
+			expiration: 14 days
+
+		database:
+			default:
+				dsn: 'mysql:host=localhost;dbname=jampl'
+				user: jampl
+				password: jampl
+
+
+	services:
+		authenticator: Jampl\Authenticator
+
+		moderators: Jampl\Moderators
+		news: Jampl\News
+		reference: Jampl\Reference
+		services: Jampl\Services
+		galery: Jampl\Galery
+		contacts: Jampl\Contacts
+		page: Jampl\Page
+
+
+	factories:
+
+
+production < common:
+
+development < common:

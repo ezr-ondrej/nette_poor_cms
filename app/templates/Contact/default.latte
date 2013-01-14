@@ -1,0 +1,74 @@
+
+{block content}
+<h2 class="art-postheader">Kontakty</h2>
+{foreach $contact_groups as $group}
+<div class="content-top">
+	<div class="art-bar art-blockheader">
+		<h3>{$group->name}</h3>
+	</div>
+
+	<div class="admin-tool">
+	{if $admin}<a n:href="addContact!, $group->id" title="Přidat kontakt"><img src="{$basePath}/images/buttons/add.png" /></a>{/if}
+	</div>
+</div>
+<table class="contacts">
+    {*<tr>
+        <th class="contact-function">Pozice</th>
+        <th class="contact-name">Jméno</th>
+        <th class="contact-number">telefon</th>
+        <th class="contact-mail">e-mail</th>
+    </tr>*}
+	{foreach $group->related('contact') as $contact}
+    <tr>
+        <td class="contact-function">{$contact->function}</td>
+        <td class="contact-name">{$contact->name}</td>
+        <td class="contact-number">{$contact->phone}</td>
+        <td class="contact-mail"><a href="mailto:{$contact->mail}">{$contact->mail}</a></td>
+		{if $admin}
+		<td><span class="admin-tool-mini">
+			<a n:href="editcont!, $contact->id" class="edit"><img src="{$basePath}/images/buttons/miniedit.png" /></a>
+			<a n:href="delcont!, $contact->id" class="delete"><img src="{$basePath}/images/buttons/minidel.png" /></a>
+		</span></td>
+		{/if}
+    </tr>
+	{/foreach}
+</table>
+{/foreach}
+{/block}
+
+{block admin}
+{if $admin}
+	{control adminForm}
+{/if}
+{/block}
+
+{block head}
+<style>
+	.admin-tool-mini img { margin: 0; }
+	.contacts {
+		margin-bottom: 30px !important;
+		background-color: #EDF1F2;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+	}
+	.contacts tr {
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+	}
+	.contacts tr:hover {
+		background-color: #C1CFD1;
+	}
+	.contacts td.contact-function { width: 30% }
+    .contacts td { width: 23%; padding: 5px 5px; }
+	.contacts td,
+	.contacts th {
+		border: none;
+	}
+	.admin-tool img {
+		float: right;
+		width: 40px;
+	}
+</style>
+{/block}

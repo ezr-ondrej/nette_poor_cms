@@ -1,0 +1,52 @@
+
+{block content}
+<h2 class="art-postheader">Admin</h2>
+<div class="art-post-body">
+Dobrý den, jste přihlášen jako {$username} <br/>
+Jste oprávněn měnit obsah.<br/>
+<p>U nastavitelných položek by měly být ovládací prvky, umožňující administraci.
+Pokud tomu tak není, kontaktujte prosím kontaktní osobu <a href="http://www.wepla.cz">Wepla webservis</a></p>
+</div>
+
+<h2 class="art-postheader">Admin Accounts</h2>
+{if $userid==1}
+<div class="admin-tool">
+	<a n:href="addmod!" class="add"><img src="{$basePath}/images/buttons/add.png" width="40px"></a>
+</div>
+{/if}
+<div class="art-post-body">
+<table>
+    <tr>
+	<th>Username</th><th>Jméno</th><th>Příjmení</th><th>E-mail</th><th></th>
+    </tr>
+    {foreach $moderators as $moderator}
+    <tr>
+	<td>{$moderator->username}</td>
+	<td>{$moderator->name}</td>
+	<td>{$moderator->surname}</td>
+	<td>{$moderator->mail}</td>
+	<td><span class="admin-tool-mini">
+		<a n:href="editpass!, $moderator->id" class="edit"><img src="{$basePath}/images/buttons/miniedit.png"></a>
+		{if $moderator->id!=$userid && $moderator->id!=1}<a n:href="delmod!, $moderator->id" class="delete"><img src="{$basePath}/images/buttons/minidel.png"></a>{/if}
+	    </span></td>
+    </tr>
+    {/foreach}
+</table>
+
+
+</div>
+{/block}
+
+{block admin}
+{if $admin}
+    {control adminForm}
+{/if}
+{/block}
+
+{block head}
+<style>
+	.admin-tool {
+		float: right;
+	}
+</style>
+{/block}

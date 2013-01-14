@@ -1,0 +1,110 @@
+{block left}
+<h2 class="art-postheader">Kategorie</h2>
+<div class="content-box">
+<ul class="art-vmenu">
+    <li>
+        <a n:href="default, null" n:class="$album_des->galery_cat_id==null ? active">Vše</a>
+    </li>
+{foreach $categories as $category}
+    {if $iterator->first}<hr class="divider"/>{/if}
+    <li>
+        <a n:href="default, $category->id" n:class="$album_des->galery_cat_id==$category->id ? active">{$category->name}</a>
+    </li>
+    {if !$iterator->last}<hr class="divider"/>{/if}
+{/foreach}
+</ul>
+</div>
+{/block}
+
+{block content}
+<h2 class="art-postheader">Album</h2>
+<div class="art-post-body">
+    <div class="gallery-top art-blockheader">
+        <h3 class="t">{$album_des->name}</h3>
+        <div class="admin-tool">
+        {if $admin}<a href="#" class="admin" title="Přidat fotografii"><img src="{$basePath}/images/buttons/add.png" /></a>{/if}
+        </div>
+    </div>
+    <div id="gallery" >
+		{control paginator}
+        <ul>
+            {foreach $picts as $pict}
+            <li>
+                <a href="{$basePath}/files/galery/{$pict->name}" class="galery-link" title="{$pict->description}">
+                    <img src="{$basePath}/files/galery/thumb_{$pict->name}" width="100" height="100" alt="" />
+                </a>
+                {if $admin}
+                <br/>
+                <span class="admin-tool">
+                    <a n:href="editpic!, $pict->id" class="edit"><img src="{$basePath}/images/buttons/miniedit.png"></a>
+                    <a n:href="delpic!, $pict->id" class="delete"><img src="{$basePath}/images/buttons/minidel.png"></a>
+                </span>
+                {/if}
+            </li>
+            {/foreach}
+        </ul>
+		{control paginator}
+    </div>
+</div>
+{/block}
+
+{block admin}
+{if $admin}
+    {control adminFotoForm}
+{/if}
+{/block}
+
+{block head}
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/paginator.css" media="screen" />
+
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/jquery.lightbox-0.5.css" media="screen" />
+
+<script type="text/javascript" src="{$basePath}/js/jquery.lightbox-0.5.js"></script>
+
+<!-- Ativando o jQuery lightBox plugin -->
+<script type="text/javascript">
+$(function() {
+    $('a.galery-link').lightBox({
+        imageLoading: '{!$basePath}/images/galery/lightbox-ico-loading.gif',
+	imageBtnClose: '{!$basePath}/images/galery/lightbox-btn-close.gif',
+	imageBtnPrev: '{!$basePath}/images/galery/lightbox-btn-prev.gif',
+	imageBtnNext: '{!$basePath}/images/galery/lightbox-btn-next.gif'
+    });
+});
+</script>
+<style type="text/css">
+    .seznam li { overflow: auto; }
+    .seznam li a { font-size: 15px; }
+    .gallery-top { overflow: auto; }
+    .gallery-top .admin-tool img { width: 50px; height: 50px; }
+    .admin-tool { float: right; margin-right: 5px; }
+    .admin-tool a.edit:hover { background: #2a38e9; }
+    .admin-tool a.delete:hover { background: #e51e1e; }
+    /* jQuery lightBox plugin - Gallery style */
+    #gallery {
+        /*background-color: #444;*/
+        padding: 10px;
+        width: 90%;
+    }
+    #gallery img.preview {
+        width: 100px;
+        height: 80px;
+    }
+    #gallery ul { list-style: none; overflow: auto; }
+    #gallery ul li {
+        display: block;
+        float:left;
+        /*background: #3e3e3e;*/
+        margin: 5px;
+        padding: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    #gallery ul a {
+        text-decoration: none;
+    }
+    #gallery ul li:hover { background: #bbd8f0; }
+</style>
+</head>
+{/block}

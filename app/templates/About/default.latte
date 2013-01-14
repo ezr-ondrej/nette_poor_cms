@@ -1,0 +1,22 @@
+{block left}
+<ul class="art-vmenu">
+    <li>
+        <a n:href="About:" n:class="$presenter->isLinkCurrent('About:') ? active">Naše firma</a>
+    </li>
+    <li>
+        <a n:href="About:iso" n:class="$presenter->isLinkCurrent('About:iso') ? active">Certifikace ISO</a>
+    </li>
+</ul>
+{/block}
+
+{block content}
+{control page}
+
+{/block}
+
+{block head}
+<style>
+    .our-blue { color: #1D319F; }
+    a.our-blue:active { color: #1D319F; }
+</style>
+{/block}

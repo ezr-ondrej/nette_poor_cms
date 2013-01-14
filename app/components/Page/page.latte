@@ -1,0 +1,39 @@
+
+<h2 class="art-postheader">{$title}</h2>
+
+{if $admin}
+<div class="admin-tool">
+<a n:href="edit!" class="edit"><img src="{$basePath}/images/buttons/edit.png"></a>
+</div>
+{/if}
+
+<div class="art-post-body">
+{!$content}
+</div>
+
+{if $admin}
+<div style="visibility:hidden;">
+<div class="admin-form-div">
+	{control adminForm}
+</div>
+</div>
+<script>
+$(document).ready(function() {
+	$("body").append($(".admin-form-div"));
+	
+	$(".mceEditor").tinymce({
+		// Location of TinyMCE script
+		script_url : '{!$basePath}/js/tiny_mce/tiny_mce.js',
+
+		// General options
+		theme : "advanced"
+
+	});
+});
+</script>
+<style>
+	#admin-data-box {
+		width: 750px;
+	}
+</style>
+{/if}

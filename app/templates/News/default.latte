@@ -1,0 +1,85 @@
+
+{block content}
+<h2 class="art-postheader">Aktuality</h2>
+<div class="art-post-body">
+    {if $admin}
+    <div class="actuality-top">
+    <div class="admin-tool">
+        <a href="#" class="admin" title="Přidat aktualitu"><img src="{$basePath}/images/buttons/add.png" /></a>
+    </div>
+    </div>
+    {/if}
+    <div class="art-content-layout actuality">
+    {foreach $news as $actuality}
+    <div class="art-content-layout-row">
+        {if $admin}
+        <div class="admin-tool">
+            <a n:href="edit!, $actuality->id" class="edit"><img src="{$basePath}/images/buttons/edit.png"></a>
+            <a n:href="delete!, $actuality->id" class="delete"><img src="{$basePath}/images/buttons/del.png"></a>
+        </div>
+        {/if}
+        <h3>{$actuality->title}</h3>
+        <blockquote style="margin: 10px 0">
+            {if $actuality->img}<img src="{$basePath}/files/thumb_{$actuality->img}" class="preview" />{/if}
+            {$actuality->text}
+        </blockquote>
+    </div>
+        
+    {/foreach}
+    </div>
+</div>
+{/block}
+
+
+{block head}
+<style>
+    h3 {
+        text-align: left !important;
+    }
+    .admin-tool { float: right; }
+    .admin-tool img { width: 40px; height: 40px; }
+    .actuality-top { overflow: auto; }
+    .actuality h3 {
+        color: #1D319F;
+    }
+    img.preview {
+        width: 80px;
+        height: 80px;
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+{*<style>
+    .admin-tool { float: right; }
+    .admin-tool img { width: 50px; height: 50px; }
+    .actuality-top { overflow: auto; }
+    .actuality {
+        overflow: auto;
+        padding: 10px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        
+        background: #bbd8f0;
+        margin: 10px 0;
+    }
+    .actuality h3 {
+        margin: 5px;
+        color: #1B47AF;
+        font-size: 17px;
+    }
+    img.preview {
+        width: 80px;
+        height: 80px;
+        float: left;
+        margin-right: 10px;
+    }
+</style>*}
+{/block}
+
+
+{block admin}
+{if $admin}
+    {control adminForm}
+{/if}
+{/block}

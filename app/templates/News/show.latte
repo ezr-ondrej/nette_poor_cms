@@ -1,0 +1,37 @@
+{block content}
+<h2 class="art-postheader">{$item->title}</h2>
+<div class="art-post-body actuality">
+    {if $item->img}
+	<div class="galery">
+        <a href="{$basePath}/files/{$item->img}"><img src="{$basePath}/files/thumb_{$item->img}" class="preview" /></a>
+    </div>
+	{/if}
+	{$item->text}
+</div>
+{/block}
+
+{block head}
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/jquery.lightbox-0.5.css" media="screen" />
+
+<script type="text/javascript" src="{$basePath}/js/jquery.lightbox-0.5.js"></script>
+
+<script type="text/javascript">
+// Initialize the plugin with no custom options
+$(function() {
+    $('.galery a').lightBox({
+        imageLoading: '{!$basePath}/images/galery/lightbox-ico-loading.gif',
+        imageBtnClose: '{!$basePath}/images/galery/lightbox-btn-close.gif',
+        imageBtnPrev: '{!$basePath}/images/galery/lightbox-btn-prev.gif',
+        imageBtnNext: '{!$basePath}/images/galery/lightbox-btn-next.gif'
+    });
+});
+
+</script>
+
+<style>
+    .admin-tool { float: right; }
+    .admin-tool img { width: 50px; height: 50px; }
+	.galery { float: left; }
+</style>
+
+{/block}

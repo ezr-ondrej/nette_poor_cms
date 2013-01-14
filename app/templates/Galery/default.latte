@@ -1,0 +1,126 @@
+{block left}
+<h2 class="art-postheader">Zobrazit</h2>
+<div class="content-box">
+<ul class="art-vmenu">
+    <li>
+        <a n:href="this, null" n:class="$presenter->linkCurrent ? active">Vše</a>
+    </li>
+{foreach $categories as $category}
+    <li>
+        <a n:href="this, $category->id" n:class="$presenter->linkCurrent ? active">{$category->name}</a>
+        {if $admin and $category->user}
+        <div class="admin-tool-mini">
+            <a n:href="delcat!, $category->id" class="delete"><img src="{$basePath}/images/buttons/minidel.png"></a>
+        </div>
+        {/if}
+    </li>
+{/foreach}
+</ul>
+<hr class="divider"/>
+</div>
+{/block}
+
+{block content}
+<h2 class="art-postheader">Alba</h2>
+<div class="content-box">
+<div class="gallery-top">
+    {*$active_category*}
+    {if $admin}Varování: Zde se uživateli zobrazují pouze alba, ve kterých jsou obrázky!
+    <div class="admin-tool">
+        <a href="#" class="admin" title="Přidat album/kategorii"><img src="{$basePath}/images/buttons/add.png" /></a>
+    </div>
+    {/if}
+</div>
+<div id="gallery">
+{control paginator}
+<ul>
+{foreach $albaprev as $preview}
+    {*if $preview['MIN(galery.name)']*}
+    <li>
+        <a n:href="show, $preview->id" >
+            <img src="{$basePath}/
+				{if $preview['MIN(galery.name)']}
+					files/galery/thumb_{$preview['MIN(galery.name)']}
+				{else}
+					images/no_image.png
+				{/if}" 
+			class="preview" />
+            <br />
+            {$preview['name']}
+            {if $admin && $preview->id!=0}
+            <div class="admin-tool">
+                <a n:href="delalb!, $preview->id" class="delete"><img src="{$basePath}/images/buttons/minidel.png"></a>
+            </div>
+            {/if}
+        </a>
+    </li>
+    {*elseif $admin}
+    <li>
+        <a n:href="show, $preview->id" >
+            <img src="{$basePath}/images/no_image.png" class="preview"/>
+            <br />
+            {$preview['name']}
+            <div class="admin-tool">
+                <a n:href="delalb!, $preview->id" class="delete"><img src="{$basePath}/images/buttons/minidel.png"></a>
+            </div>
+        </a>
+    </li>
+    {/if*}
+{/foreach}
+</ul>
+{control paginator}
+</div>
+</div>
+{/block}
+
+{block admin}
+{if $admin}
+    {control adminAlbumForm}
+{/if}
+{/block}
+
+{block head}
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/paginator.css" media="screen" />
+
+<style type="text/css">
+    .gallery-top { overflow: auto; }
+    .gallery-top .admin-tool img { width: 50px; height: 50px; }
+    
+    .admin-tool-mini { position:absolute; top:5px; right:5px; }
+    .admin-tool-mini a.ask-del { display: inline !important; }
+    
+    .admin-tool a.ask-del img { margin: 0 !important; padding: 0 !important; }
+    .admin-tool { float: right; margin-right: 5px; }
+    a.delete:hover { background: #e51e1e; }
+    
+    /* jQuery lightBox plugin - Gallery style */
+    #gallery {
+        /*background-color: #444;*/
+        padding: 10px;
+        width: 90%;
+    }
+    #gallery img.preview {
+        width: 100px;
+        height: 80px;
+    }
+    #gallery ul { list-style: none; overflow: auto; }
+    #gallery ul li {
+        display: block;
+        float:left;
+        /*background: #3e3e3e;*/
+        margin: 5px;
+        padding: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    #gallery ul a {
+        color: #1B47AF;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    #gallery ul li:hover { background: #bbd8f0; }
+</style>
+</head>
+{/block}

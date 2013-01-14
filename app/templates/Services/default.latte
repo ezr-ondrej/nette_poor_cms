@@ -1,0 +1,121 @@
+{block left}
+<h2 class="art-postheader">Zobrazit</h2>
+<div class="content-box">
+<ul class="art-vmenu">
+{foreach $services as $service}
+    <li>
+        <a href="{plink 'show', $service->id}" n:class="$presenter->linkCurrent ? active">{$service->title}</a>
+    </li>
+    {if !$iterator->last}<hr class="divider"/>{/if}
+{/foreach}
+</ul>
+<hr class="divider"/>
+</div>
+{/block}
+
+{block content}
+<h2 class="art-postheader">Služby</h2>
+<div class="art-post-body">
+    <div class="reference-top">
+        <div class="art-bar art-blockheader">
+            <h3 class="t">{*$active->name*}</h3>
+        </div>
+        
+        <div class="admin-tool">
+        {if $admin}<a href="#" class="admin" title="Přidat referenci"><img src="{$basePath}/images/buttons/add.png" /></a>{/if}
+        </div>
+    </div>
+    
+    <div class="art-content-layout aktuality">
+    {foreach $services as $ref}
+    <div class="reference art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 100%;">
+            {if $admin}
+            <div class="admin-tool">
+                <a n:href="edit!, $ref->id" class="edit"><img src="{$basePath}/images/buttons/edit.png"></a>
+                <a n:href="delete!, $ref->id" class="delete"><img src="{$basePath}/images/buttons/del.png"></a>
+            </div>
+            {/if}
+            
+            <a n:href="show, $ref->id"><h3>{$ref->title}</h3></a>
+            <blockquote style="margin: 10px 0">
+                <a href="{$basePath}/files/{$ref->foto}" class="galery-{$ref->id}">
+                <img src="{$basePath}/files/thumb_{$ref->foto}" class="preview" />
+                </a>
+                {if $ref->galery_album_id}
+                {foreach $ref->galery_album->related('galery') as $galery}
+                    <a href="{$basePath}/files/galery/{$galery->name}" class="galery-{$ref->id}"></a>
+                {/foreach}
+                {/if}
+                <p>{$ref->text|truncate:300}</p>
+            </blockquote>
+        </div>
+    </div>
+
+    {*{if !$iterator->last}<hr class="divider"/>{/if}*}
+
+    <script>
+    $(function() {
+        $('a.galery-{$ref->id}').lightBox({
+            imageLoading: '{!$basePath}/images/galery/lightbox-ico-loading.gif',
+            imageBtnClose: '{!$basePath}/images/galery/lightbox-btn-close.gif',
+            imageBtnPrev: '{!$basePath}/images/galery/lightbox-btn-prev.gif',
+            imageBtnNext: '{!$basePath}/images/galery/lightbox-btn-next.gif'
+        });
+    });
+    </script>
+    {/foreach}
+    </div>
+    
+</div>
+
+{/block}
+
+{block admin}
+{if $admin}
+    {control adminForm}
+{/if}
+{/block}
+
+{block head}
+<link rel="stylesheet" type="text/css" href="{$basePath}/css/jquery.lightbox-0.5.css" media="screen" />
+
+<script type="text/javascript" src="{$basePath}/js/jquery.lightbox-0.5.js"></script>
+
+<style>
+    .admin-tool { float: right; }
+    .admin-tool img { width: 40px; height: 40px; }
+    .reference-top { overflow: auto; }
+    .reference-top {
+        text-align: center;
+        margin: 5px;
+        color: #1B47AF;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .reference {
+        padding-top: 20px;
+    }
+    .reference blockquote {
+        overflow: auto;
+        padding-left: 10px;
+        background-image: none;
+    }
+    .reference h3 {
+        color: #1D319F;
+    }
+    .reference a {
+        text-decoration: none;
+    }
+    .reference a:hover h3,
+    .reference a:active h3{
+        text-decoration: underline;
+    }
+    img.preview {
+        width: 80px;
+        height: 80px;
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+{/block}
